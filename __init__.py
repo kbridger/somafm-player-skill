@@ -1,17 +1,44 @@
-from mycroft import MycroftSkill, intent_file_handler
+from mycroft.skills.common_play_skill import CommonPlaySkill, CPSMatchLevel
+from mycroft.util.parse import match_one
 
+track_dict = {
+    'groovesalad': 'https://ice6.somafm.com/groovesalad-256-mp3',
+    'suburbs of goa': 'https://ice4.somafm.com/suburbsofgoa-128-mp3'
+}
 
-class SomafmPlayer(MycroftSkill):
-    def __init__(self):
-        MycroftSkill.__init__(self)
+class SomafmPlayer(CommonPlaySkill):
+    def CPS_match_query_phrase(self, phrase):
+        """ This method responds whether the skill can play the input phrase.
 
-    @intent_file_handler('player.somafm.intent')
-    def handle_player_somafm(self, message):
-        streamname = message.data.get('streamname')
+            The method is invoked by the PlayBackControlSkill.
 
-        self.speak_dialog('player.somafm', data={
-            'streamname': streamname
-        })
+            Returns: tuple (matched phrase(str),
+                            match level(CPSMatchLevel),
+                            optional data(dict))
+                     or None if no match was found.
+        """
+        # Get match and confidence
+        match, confidence = match_one(phrase, track_dict)
+        # If confidence is high enough return a match
+        if confidence > 0.5:
+            return (match, CPSMatchLevel.TITLE, {"track": match})
+        # Otherwise return None
+        else:
+            return None
+
+    def CPS_start(self, phrase, data):
+        """ Starts playback.
+
+            Called by the playback control skill to start playback if the
+            skill is selected (has the best match level)
+        """
+        # Retrieve the track url from the data
+        url = data['track']
+        self.log.info("Here is track: {url}")
+        self.speak_dialog("Playing Soma FM")
+        #self.audioservice.play(url) # Send url to audioservice to start playback
+        self.CPS_play([url])
+        #pass
 
 
 def create_skill():

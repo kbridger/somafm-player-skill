@@ -36,7 +36,8 @@ class SomafmPlayer(CommonPlaySkill):
         url = data['track']
         self.log.info(f"Playing from: {url}")
         self.speak_dialog("Playing Soma FM")
-        self.audioservice.play(url) # Send url to audioservice to start playback
+        # Send url to audioservice to start playback
+        self.audioservice.play(url) 
         #self.CPS_play(["url"])
 
 

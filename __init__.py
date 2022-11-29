@@ -3,6 +3,7 @@ from mycroft.util.parse import match_one
 
 track_dict = {
     'groovesalad': 'https://ice4.somafm.com/groovesalad-128-mp3',
+    'groove salad': 'https://ice4.somafm.com/groovesalad-128-mp3',
     'suburbs of goa': 'https://ice4.somafm.com/suburbsofgoa-128-mp3'
 }
 

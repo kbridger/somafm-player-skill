@@ -67,7 +67,7 @@ class SomafmPlayer(CommonPlaySkill):
 #        self.log.info("Let's just play this URL directly")
 #        self.CPS_play("https://ice4.somafm.com/groovesalad-128-mp3")
 #        self.log.info("That should have played")
-
+#
 
 def create_skill():
     return SomafmPlayer()
